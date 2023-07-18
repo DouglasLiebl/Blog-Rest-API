@@ -1,11 +1,16 @@
 package io.github.douglasliebl.blogrestapi.service.impl;
 
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import io.github.douglasliebl.blogrestapi.entity.Post;
 import io.github.douglasliebl.blogrestapi.exception.ResourceNotFoundException;
 import io.github.douglasliebl.blogrestapi.payload.PostDto;
+import io.github.douglasliebl.blogrestapi.payload.PostResponse;
 import io.github.douglasliebl.blogrestapi.repository.PostRepository;
 import io.github.douglasliebl.blogrestapi.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +33,26 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream()
+    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Page<Post> postsPage = postRepository.findAll(PageRequest.of(pageNo, pageSize, Sort.by(sortBy)));
+        List<Post> posts = postsPage.getContent();
+
+        List<PostDto> content = posts.stream()
                 .map(post -> mapToDTO(post))
                 .collect(Collectors.toList());
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(postsPage.getNumber());
+        postResponse.setPageSize(postsPage.getSize());
+        postResponse.setTotalElements(postsPage.getTotalElements());
+        postResponse.setTotalPages(postsPage.getTotalPages());
+        postResponse.setLast(postsPage.isLast());
+
+        return postResponse;
     }
 
     @Override
