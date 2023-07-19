@@ -4,6 +4,7 @@ import io.github.douglasliebl.blogrestapi.payload.PostDto;
 import io.github.douglasliebl.blogrestapi.payload.PostResponse;
 import io.github.douglasliebl.blogrestapi.service.PostService;
 import io.github.douglasliebl.blogrestapi.utils.Constants;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class PostResource {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity createPost(@RequestBody PostDto request) {
+    public ResponseEntity createPost(@RequestBody @Valid PostDto request) {
         var post = postService.createPost(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
     }
@@ -38,7 +39,7 @@ public class PostResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updatePost(@RequestBody PostDto request,
+    public ResponseEntity updatePost(@RequestBody @Valid PostDto request,
                                      @PathVariable("id") Long id) {
         var post = postService.updatePost(request, id);
         return ResponseEntity.ok().body(post);

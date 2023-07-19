@@ -8,7 +8,6 @@ import io.github.douglasliebl.blogrestapi.payload.PostResponse;
 import io.github.douglasliebl.blogrestapi.repository.PostRepository;
 import io.github.douglasliebl.blogrestapi.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

@@ -2,6 +2,7 @@ package io.github.douglasliebl.blogrestapi.controller;
 
 import io.github.douglasliebl.blogrestapi.payload.CommentDto;
 import io.github.douglasliebl.blogrestapi.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class CommentResource {
 
     @PostMapping("/{post_id}/comments")
     public ResponseEntity createComment(@PathVariable("post_id") Long id,
-                                        @RequestBody CommentDto request) {
+                                        @RequestBody @Valid CommentDto request) {
         var comment = commentService.createComment(id, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }
@@ -37,7 +38,7 @@ public class CommentResource {
     @PutMapping("/{post_id}/comments/{comment_id}")
     public ResponseEntity updateComment(@PathVariable("post_id") Long postId,
                                         @PathVariable("comment_id") Long commentId,
-                                        @RequestBody CommentDto request) {
+                                        @RequestBody @Valid CommentDto request) {
         var comment = commentService.updateComment(request, postId, commentId);
         return ResponseEntity.ok().body(comment);
     }

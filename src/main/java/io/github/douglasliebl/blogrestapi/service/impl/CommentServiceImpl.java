@@ -9,7 +9,6 @@ import io.github.douglasliebl.blogrestapi.repository.CommentRepository;
 import io.github.douglasliebl.blogrestapi.repository.PostRepository;
 import io.github.douglasliebl.blogrestapi.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
