@@ -23,7 +23,6 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository repository;
     private final PostRepository postRepository;
-    private final ModelMapper mapper;
 
     @Override
     @Transactional
@@ -72,13 +71,22 @@ public class CommentServiceImpl implements CommentService {
         repository.delete(comment);
     }
 
-
     private CommentDto mapToDTO(Comment comment) {
-        return mapper.map(comment, CommentDto.class);
+        CommentDto commentDto = new CommentDto();
+        commentDto.setId(comment.getId());
+        commentDto.setName(comment.getName());
+        commentDto.setEmail(comment.getEmail());
+        commentDto.setBody(comment.getBody());
+        return commentDto;
     }
 
     private Comment mapToEntity(CommentDto commentDto) {
-        return mapper.map(commentDto, Comment.class);
+        Comment comment = new Comment();
+        comment.setId(commentDto.getId());
+        comment.setName(commentDto.getName());
+        comment.setEmail(commentDto.getEmail());
+        comment.setBody(commentDto.getBody());
+        return comment;
     }
 
     public Comment getComment(Long postId, Long commentId) {Post post = postRepository.findById(postId)

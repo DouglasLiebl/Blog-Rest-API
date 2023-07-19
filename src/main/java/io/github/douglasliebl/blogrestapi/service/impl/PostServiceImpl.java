@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final ModelMapper mapper;
 
     @Override
     @Transactional
@@ -83,11 +82,20 @@ public class PostServiceImpl implements PostService {
     }
 
     public Post mapToEntity(PostDto postDto) {
-        return mapper.map(postDto, Post.class);
+        Post post = new Post();
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDescription());
+        post.setContent(postDto.getContent());
+        return post;
     }
 
     public PostDto mapToDTO(Post post) {
-        return mapper.map(post, PostDto.class);
+        PostDto postDto = new PostDto();
+        postDto.setId(post.getId());
+        postDto.setTitle(post.getTitle());
+        postDto.setDescription(post.getDescription());
+        postDto.setContent(post.getContent());
+        return postDto;
     }
 
 }
